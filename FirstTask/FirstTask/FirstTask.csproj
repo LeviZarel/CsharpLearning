@@ -45,7 +45,9 @@
     <Compile Include="IData.cs" />
     <Compile Include="MethodMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MagicVector.cs" />
+    <Compile Include="Vector.cs" />
+    <Compile Include="VectorCollectionOperations.cs" />
+    <Compile Include="VectorCollections.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

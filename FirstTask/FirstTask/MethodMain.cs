@@ -10,12 +10,14 @@ namespace FirstTask
     {
         static void Main(string[] args)
         {
-          
-            MagicVector vector = new MagicVector(args);
-            Console.Write("Sum: ");
-            vector.printVector(vector.Sum());
-            Console.WriteLine("Matriz: ");
-            vector.PrintMatriz();
+            var vectorCollections = new VectorCollections(args);
+            Console.WriteLine($"view: {vectorCollections.ToString()}");
+            int [,] collectionNumbers = vectorCollections.TransformNumber();
+            
+            int[] vectorResult = VectorCollectionOperations.Instance.RealizeOperation(collectionNumbers, VectorCollectionOperations.Operation.Sum);
+            Console.WriteLine($"sum: {VectorCollectionOperations.Instance.TranformVectorToString(vectorResult)}");
+            int[] vectorResult2 = VectorCollectionOperations.Instance.RealizeOperation(collectionNumbers, VectorCollectionOperations.Operation.Minus);
+            Console.WriteLine($"minus: {VectorCollectionOperations.Instance.TranformVectorToString(vectorResult2)}");
         }
     }
 }

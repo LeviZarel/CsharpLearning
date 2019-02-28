@@ -1,43 +1,63 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FirstTask
 {
-    class MagicVector
+    class VectorCollections
     {
         private string[,] array;
-        private Char filter;
+        private const char filter = ',';
+        private string defaultValue = "0";
         private int rowLength;
         private int colLength;
-        public MagicVector(string[] args)
+        public VectorCollections(string[] args)
         {
-            filter = ',';
             rowLength = args.Length;
             colLength = MaxColLength(args);
             array = new string[rowLength, colLength];
             for (int i = 0; i < rowLength; i++)
             {
-                String[] words = args[i].Split(filter);
+                string[] words = args[i].Split(filter);
                 for (int j = 0; j < colLength; j++)
                 {
                     if (j < words.Length)
-                        array[i, j] = words[j];
+                    {
+                        array[i, j] = (words[j]=="")? defaultValue: words[j];
+                    }
                     else
-                        array[i, j] = "0";
+                        array[i, j] = defaultValue;
                 }
             }
         }
-
-        public void PrintMatriz()
+        public int MaxColLength(string[] args)
         {
-            
+            int maxLength = 0;
+            foreach (var word in args)
+            {
+                int currentLength = word.Split(filter).Length;
+                if (currentLength > maxLength)
+                    maxLength = currentLength;
+            }
+            return maxLength;
+        }
+        public override string ToString()
+        {
+            string res = "";
             for (int i = 0; i < rowLength; i++)
             {
+                res += "[";
                 for (int j = 0; j < colLength; j++)
                 {
-                    Console.Write(string.Format("{0} ", array[i, j]));
+                    res += array[i, j];
+                    res += (j < colLength - 1) ? ", " : "";
                 }
-                Console.WriteLine();
-            }
+                res += "]";
+                res += (i < rowLength- 1) ? ", " : "";
+        }
+            return res;
         }
 
         public int[,] TransformNumber()
@@ -52,8 +72,7 @@ namespace FirstTask
             }
             return arrayResult;
         }
-
-        public int parseStringToInt(string str)
+        private int parseStringToInt(string str)
         {
             int res = 0;
             try
@@ -73,48 +92,5 @@ namespace FirstTask
             }
             return res;
         }
-
-        public int[] Sum()
-        {
-            int [,] arrayOfNumbers = TransformNumber();
-            int[] res = new int[colLength];
-            for (int i = 0; i < colLength; i++)
-            {
-                res[i] = 0;
-            }
-            for (int i = 0; i < rowLength; i++)
-            {
-                for (int j = 0; j < colLength; j++)
-                {
-                    res[j] += arrayOfNumbers[i, j];
-                }
-            }
-            
-            return res;
-        }
-
-        public void printVector(int[] vect)
-        {
-            Console.Write("[");
-            for (int i = 0; i < vect.Length; i++)
-            {
-                String jump = (i < vect.Length - 1) ? ", " : "";
-                Console.Write(vect[i]+jump);
-            }
-            Console.WriteLine("]");
-        }
-  
-        public int MaxColLength(string[] args)
-        {
-            int maxLength = 0;
-            foreach (var word in args)
-            {
-                int currentLength = word.Split(filter).Length;
-                if (currentLength > maxLength)
-                    maxLength = currentLength; 
-            }
-            return maxLength;
-        }
-
     }
 }
