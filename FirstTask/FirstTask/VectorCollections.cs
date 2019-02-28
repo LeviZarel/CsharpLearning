@@ -6,91 +6,46 @@ using System.Threading.Tasks;
 
 namespace FirstTask
 {
-    class VectorCollections
+    public class VectorCollections
     {
-        private string[,] array;
-        private const char filter = ',';
-        private string defaultValue = "0";
-        private int rowLength;
-        private int colLength;
+        private const char Filter = ',';
+        private const int MaxArguments = 50;
+        private const string MaxArgumentsMessage = "Numbers of Arguments is Exceded";
+        private const string InvalidNumberMessage = "Vector Arguments must supply valid numbers.";
+        private List<Vector2D> Vectors = new List<Vector2D>();
+
         public VectorCollections(string[] args)
         {
-            rowLength = args.Length;
-            colLength = MaxColLength(args);
-            array = new string[rowLength, colLength];
-            for (int i = 0; i < rowLength; i++)
+            if(args.Length <= MaxArguments)
             {
-                string[] words = args[i].Split(filter);
-                for (int j = 0; j < colLength; j++)
+                for (int i = 0; i < args.Length; i++)
                 {
-                    if (j < words.Length)
-                    {
-                        array[i, j] = (words[j]=="")? defaultValue: words[j];
-                    }
-                    else
-                        array[i, j] = defaultValue;
+                    string[] filtrate = args[i].Split(Filter);
+                    string[] argComplete = new string[2];
+                    argComplete[0] = filtrate[0];
+                    argComplete[1] = (filtrate.Length == 1) ? "0": filtrate[1];
+                    var vector = new Vector2D(ParseToInt(argComplete[0]), ParseToInt(argComplete[1]));
+                    Vectors.Add(vector);
                 }
             }
-        }
-        public int MaxColLength(string[] args)
-        {
-            int maxLength = 0;
-            foreach (var word in args)
+            else
             {
-                int currentLength = word.Split(filter).Length;
-                if (currentLength > maxLength)
-                    maxLength = currentLength;
+                throw new ArgumentException(MaxArgumentsMessage);
             }
-            return maxLength;
-        }
-        public override string ToString()
-        {
-            string res = "";
-            for (int i = 0; i < rowLength; i++)
-            {
-                res += "[";
-                for (int j = 0; j < colLength; j++)
-                {
-                    res += array[i, j];
-                    res += (j < colLength - 1) ? ", " : "";
-                }
-                res += "]";
-                res += (i < rowLength- 1) ? ", " : "";
-        }
-            return res;
         }
 
-        public int[,] TransformNumber()
+        public Vector2D getVectorByIndex(int index)
         {
-            int[,] arrayResult = new int[rowLength, colLength];
-            for (int i = 0; i < rowLength; i++)
-            {
-                for (int j = 0; j < colLength; j++)
-                {
-                    arrayResult[i, j] = parseStringToInt(array[i, j]);
-                }
-            }
-            return arrayResult;
+            return Vectors[index];
         }
-        private int parseStringToInt(string str)
+
+        private int ParseToInt(string value)
         {
-            int res = 0;
-            try
+            if (!int.TryParse(value, out var parsedValue))
             {
-                res = System.Convert.ToInt32(str);
+                throw new ArgumentException(InvalidNumberMessage);
             }
-            catch (FormatException)
-            {
-                // the FormatException is thrown when the string text does 
-                // not represent a valid integer.
-            }
-            catch (OverflowException)
-            {
-                // the OverflowException is thrown when the string is a valid integer, 
-                // but is too large for a 32 bit integer.  Use Convert.ToInt64 in
-                // this case.
-            }
-            return res;
+            return parsedValue;
         }
     }
 }

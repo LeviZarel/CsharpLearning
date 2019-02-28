@@ -10,14 +10,20 @@ namespace FirstTask
     {
         static void Main(string[] args)
         {
-            var vectorCollections = new VectorCollections(args);
-            Console.WriteLine($"view: {vectorCollections.ToString()}");
-            int [,] collectionNumbers = vectorCollections.TransformNumber();
-            
-            int[] vectorResult = VectorCollectionOperations.Instance.RealizeOperation(collectionNumbers, VectorCollectionOperations.Operation.Sum);
-            Console.WriteLine($"sum: {VectorCollectionOperations.Instance.TranformVectorToString(vectorResult)}");
-            int[] vectorResult2 = VectorCollectionOperations.Instance.RealizeOperation(collectionNumbers, VectorCollectionOperations.Operation.Minus);
-            Console.WriteLine($"minus: {VectorCollectionOperations.Instance.TranformVectorToString(vectorResult2)}");
+            try
+            {
+                var vectorCollections = new VectorCollections(args);
+                var vectorA = vectorCollections.getVectorByIndex(0);
+                var vectorB = vectorCollections.getVectorByIndex(1);
+                var vectorResultPlus = vectorA.Add(vectorB);
+                Console.WriteLine($"Add: {vectorResultPlus.ToString()}");
+                int vectorResultDot = vectorA.DotProduct(vectorB);
+                Console.WriteLine($"Dot Product: {vectorResultDot}");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
